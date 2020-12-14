@@ -124,3 +124,11 @@ networks:
        - subnet: 10.x.x.x/16
          gateway: 10.x.x.x
       
+## Status do projeto
+O projeto está em desenvolvimento e ajustes serão providenciados. O container heliosapp ainda possui muitas responsabilidades, apesar de ser um anti-pattern, o container é executado sem erros e os serviços essenciais (supervisor, celeryd) são inicializados permintindo execução do helios. 
+
+## Colaboradores
+Felipe Silveira (silveira.felipe@unifesp.br)
+Francismar N. Silva (fnsilva@unifesp.br)
+Thiago Nunes (thiago.nunes@unifesp.br)
+Walfran Araújo (walfran.carvalho@unifesp.br)
