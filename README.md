@@ -121,9 +121,6 @@ networks:
     driver: bridge
     ipam:
      config:
-       - subnet: 10.8.0.0/16
-         gateway: 10.8.0.1
-         aux_adressess:
-            heliosbd: 10.8.0.2
-            heliiosapp: 10.8.0.3
-```
+       - subnet: 10.x.x.x/16
+         gateway: 10.x.x.x
+      
