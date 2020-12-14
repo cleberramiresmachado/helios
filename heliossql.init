@@ -1,0 +1,2999 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.6.19
+-- Dumped by pg_dump version 9.6.19
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.auth_group (
+    id integer NOT NULL,
+    name character varying(80) NOT NULL
+);
+
+
+ALTER TABLE public.auth_group OWNER TO helios;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.auth_group_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_id_seq OWNER TO helios;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.auth_group_id_seq OWNED BY public.auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.auth_group_permissions (
+    id integer NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_group_permissions OWNER TO helios;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.auth_group_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_permissions_id_seq OWNER TO helios;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.auth_group_permissions_id_seq OWNED BY public.auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.auth_permission (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.auth_permission OWNER TO helios;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.auth_permission_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_permission_id_seq OWNER TO helios;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.auth_permission_id_seq OWNED BY public.auth_permission.id;
+
+
+--
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.auth_user (
+    id integer NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone,
+    is_superuser boolean NOT NULL,
+    username character varying(50) NOT NULL,
+    first_name character varying(150) NOT NULL,
+    last_name character varying(150) NOT NULL,
+    email character varying(254) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    date_joined timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.auth_user OWNER TO helios;
+
+--
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.auth_user_groups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_groups OWNER TO helios;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.auth_user_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_groups_id_seq OWNER TO helios;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.auth_user_groups_id_seq OWNED BY public.auth_user_groups.id;
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.auth_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_id_seq OWNER TO helios;
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.auth_user_id_seq OWNED BY public.auth_user.id;
+
+
+--
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.auth_user_user_permissions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_user_permissions OWNER TO helios;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.auth_user_user_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_user_permissions_id_seq OWNER TO helios;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.auth_user_user_permissions_id_seq OWNED BY public.auth_user_user_permissions.id;
+
+
+--
+-- Name: celery_taskmeta; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.celery_taskmeta (
+    id integer NOT NULL,
+    task_id character varying(255) NOT NULL,
+    status character varying(50) NOT NULL,
+    result text,
+    date_done timestamp with time zone NOT NULL,
+    traceback text,
+    hidden boolean NOT NULL,
+    meta text
+);
+
+
+ALTER TABLE public.celery_taskmeta OWNER TO helios;
+
+--
+-- Name: celery_taskmeta_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.celery_taskmeta_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.celery_taskmeta_id_seq OWNER TO helios;
+
+--
+-- Name: celery_taskmeta_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.celery_taskmeta_id_seq OWNED BY public.celery_taskmeta.id;
+
+
+--
+-- Name: celery_tasksetmeta; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.celery_tasksetmeta (
+    id integer NOT NULL,
+    taskset_id character varying(255) NOT NULL,
+    result text NOT NULL,
+    date_done timestamp with time zone NOT NULL,
+    hidden boolean NOT NULL
+);
+
+
+ALTER TABLE public.celery_tasksetmeta OWNER TO helios;
+
+--
+-- Name: celery_tasksetmeta_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.celery_tasksetmeta_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.celery_tasksetmeta_id_seq OWNER TO helios;
+
+--
+-- Name: celery_tasksetmeta_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.celery_tasksetmeta_id_seq OWNED BY public.celery_tasksetmeta.id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    content_type_id integer,
+    user_id integer NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE public.django_admin_log OWNER TO helios;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.django_admin_log_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_admin_log_id_seq OWNER TO helios;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.django_admin_log_id_seq OWNED BY public.django_admin_log.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.django_content_type (
+    id integer NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.django_content_type OWNER TO helios;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.django_content_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_content_type_id_seq OWNER TO helios;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.django_content_type_id_seq OWNED BY public.django_content_type.id;
+
+
+--
+-- Name: django_migrations; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.django_migrations (
+    id integer NOT NULL,
+    app character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_migrations OWNER TO helios;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.django_migrations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_migrations_id_seq OWNER TO helios;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.django_migrations_id_seq OWNED BY public.django_migrations.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_session OWNER TO helios;
+
+--
+-- Name: django_site; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.django_site (
+    id integer NOT NULL,
+    domain character varying(100) NOT NULL,
+    name character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.django_site OWNER TO helios;
+
+--
+-- Name: django_site_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.django_site_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_site_id_seq OWNER TO helios;
+
+--
+-- Name: django_site_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.django_site_id_seq OWNED BY public.django_site.id;
+
+
+--
+-- Name: djcelery_crontabschedule; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.djcelery_crontabschedule (
+    id integer NOT NULL,
+    minute character varying(64) NOT NULL,
+    hour character varying(64) NOT NULL,
+    day_of_week character varying(64) NOT NULL,
+    day_of_month character varying(64) NOT NULL,
+    month_of_year character varying(64) NOT NULL
+);
+
+
+ALTER TABLE public.djcelery_crontabschedule OWNER TO helios;
+
+--
+-- Name: djcelery_crontabschedule_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.djcelery_crontabschedule_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.djcelery_crontabschedule_id_seq OWNER TO helios;
+
+--
+-- Name: djcelery_crontabschedule_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.djcelery_crontabschedule_id_seq OWNED BY public.djcelery_crontabschedule.id;
+
+
+--
+-- Name: djcelery_intervalschedule; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.djcelery_intervalschedule (
+    id integer NOT NULL,
+    every integer NOT NULL,
+    period character varying(24) NOT NULL
+);
+
+
+ALTER TABLE public.djcelery_intervalschedule OWNER TO helios;
+
+--
+-- Name: djcelery_intervalschedule_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.djcelery_intervalschedule_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.djcelery_intervalschedule_id_seq OWNER TO helios;
+
+--
+-- Name: djcelery_intervalschedule_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.djcelery_intervalschedule_id_seq OWNED BY public.djcelery_intervalschedule.id;
+
+
+--
+-- Name: djcelery_periodictask; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.djcelery_periodictask (
+    id integer NOT NULL,
+    name character varying(200) NOT NULL,
+    task character varying(200) NOT NULL,
+    interval_id integer,
+    crontab_id integer,
+    args text NOT NULL,
+    kwargs text NOT NULL,
+    queue character varying(200),
+    exchange character varying(200),
+    routing_key character varying(200),
+    expires timestamp with time zone,
+    enabled boolean NOT NULL,
+    last_run_at timestamp with time zone,
+    total_run_count integer NOT NULL,
+    date_changed timestamp with time zone NOT NULL,
+    description text NOT NULL,
+    CONSTRAINT djcelery_periodictask_total_run_count_check CHECK ((total_run_count >= 0))
+);
+
+
+ALTER TABLE public.djcelery_periodictask OWNER TO helios;
+
+--
+-- Name: djcelery_periodictask_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.djcelery_periodictask_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.djcelery_periodictask_id_seq OWNER TO helios;
+
+--
+-- Name: djcelery_periodictask_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.djcelery_periodictask_id_seq OWNED BY public.djcelery_periodictask.id;
+
+
+--
+-- Name: djcelery_periodictasks; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.djcelery_periodictasks (
+    ident smallint NOT NULL,
+    last_update timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.djcelery_periodictasks OWNER TO helios;
+
+--
+-- Name: djcelery_taskstate; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.djcelery_taskstate (
+    id integer NOT NULL,
+    state character varying(64) NOT NULL,
+    task_id character varying(36) NOT NULL,
+    name character varying(200),
+    tstamp timestamp with time zone NOT NULL,
+    args text,
+    kwargs text,
+    eta timestamp with time zone,
+    expires timestamp with time zone,
+    result text,
+    traceback text,
+    runtime double precision,
+    retries integer NOT NULL,
+    worker_id integer,
+    hidden boolean NOT NULL
+);
+
+
+ALTER TABLE public.djcelery_taskstate OWNER TO helios;
+
+--
+-- Name: djcelery_taskstate_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.djcelery_taskstate_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.djcelery_taskstate_id_seq OWNER TO helios;
+
+--
+-- Name: djcelery_taskstate_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.djcelery_taskstate_id_seq OWNED BY public.djcelery_taskstate.id;
+
+
+--
+-- Name: djcelery_workerstate; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.djcelery_workerstate (
+    id integer NOT NULL,
+    hostname character varying(255) NOT NULL,
+    last_heartbeat timestamp with time zone
+);
+
+
+ALTER TABLE public.djcelery_workerstate OWNER TO helios;
+
+--
+-- Name: djcelery_workerstate_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.djcelery_workerstate_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.djcelery_workerstate_id_seq OWNER TO helios;
+
+--
+-- Name: djcelery_workerstate_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.djcelery_workerstate_id_seq OWNED BY public.djcelery_workerstate.id;
+
+
+--
+-- Name: djkombu_message; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.djkombu_message (
+    id integer NOT NULL,
+    visible boolean NOT NULL,
+    sent_at timestamp with time zone,
+    payload text NOT NULL,
+    queue_id integer NOT NULL
+);
+
+
+ALTER TABLE public.djkombu_message OWNER TO helios;
+
+--
+-- Name: djkombu_message_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.djkombu_message_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.djkombu_message_id_seq OWNER TO helios;
+
+--
+-- Name: djkombu_message_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.djkombu_message_id_seq OWNED BY public.djkombu_message.id;
+
+
+--
+-- Name: djkombu_queue; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.djkombu_queue (
+    id integer NOT NULL,
+    name character varying(200) NOT NULL
+);
+
+
+ALTER TABLE public.djkombu_queue OWNER TO helios;
+
+--
+-- Name: djkombu_queue_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.djkombu_queue_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.djkombu_queue_id_seq OWNER TO helios;
+
+--
+-- Name: djkombu_queue_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.djkombu_queue_id_seq OWNED BY public.djkombu_queue.id;
+
+
+--
+-- Name: helios_auditedballot; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.helios_auditedballot (
+    id integer NOT NULL,
+    raw_vote text NOT NULL,
+    vote_hash character varying(100) NOT NULL,
+    added_at timestamp with time zone NOT NULL,
+    election_id integer NOT NULL
+);
+
+
+ALTER TABLE public.helios_auditedballot OWNER TO helios;
+
+--
+-- Name: helios_auditedballot_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.helios_auditedballot_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.helios_auditedballot_id_seq OWNER TO helios;
+
+--
+-- Name: helios_auditedballot_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.helios_auditedballot_id_seq OWNED BY public.helios_auditedballot.id;
+
+
+--
+-- Name: helios_auth_user; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.helios_auth_user (
+    id integer NOT NULL,
+    user_type character varying(50) NOT NULL,
+    user_id character varying(100) NOT NULL,
+    name character varying(200),
+    info text NOT NULL,
+    token text,
+    admin_p boolean NOT NULL
+);
+
+
+ALTER TABLE public.helios_auth_user OWNER TO helios;
+
+--
+-- Name: helios_auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.helios_auth_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.helios_auth_user_id_seq OWNER TO helios;
+
+--
+-- Name: helios_auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.helios_auth_user_id_seq OWNED BY public.helios_auth_user.id;
+
+
+--
+-- Name: helios_castvote; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.helios_castvote (
+    id integer NOT NULL,
+    vote text NOT NULL,
+    vote_hash character varying(100) NOT NULL,
+    vote_tinyhash character varying(50),
+    cast_at timestamp with time zone NOT NULL,
+    quarantined_p boolean NOT NULL,
+    released_from_quarantine_at timestamp with time zone,
+    verified_at timestamp with time zone,
+    invalidated_at timestamp with time zone,
+    voter_id integer NOT NULL,
+    cast_ip inet
+);
+
+
+ALTER TABLE public.helios_castvote OWNER TO helios;
+
+--
+-- Name: helios_castvote_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.helios_castvote_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.helios_castvote_id_seq OWNER TO helios;
+
+--
+-- Name: helios_castvote_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.helios_castvote_id_seq OWNED BY public.helios_castvote.id;
+
+
+--
+-- Name: helios_election; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.helios_election (
+    id integer NOT NULL,
+    uuid character varying(50) NOT NULL,
+    datatype character varying(250) NOT NULL,
+    short_name character varying(100) NOT NULL,
+    name character varying(250) NOT NULL,
+    election_type character varying(250) NOT NULL,
+    private_p boolean NOT NULL,
+    description text NOT NULL,
+    public_key text,
+    private_key text,
+    questions text,
+    eligibility text,
+    openreg boolean NOT NULL,
+    featured_p boolean NOT NULL,
+    use_voter_aliases boolean NOT NULL,
+    use_advanced_audit_features boolean NOT NULL,
+    randomize_answer_order boolean NOT NULL,
+    cast_url character varying(500) NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    modified_at timestamp with time zone NOT NULL,
+    frozen_at timestamp with time zone,
+    archived_at timestamp with time zone,
+    registration_starts_at timestamp with time zone,
+    voting_starts_at timestamp with time zone,
+    voting_ends_at timestamp with time zone,
+    complaint_period_ends_at timestamp with time zone,
+    tallying_starts_at timestamp with time zone,
+    voting_started_at timestamp with time zone,
+    voting_extended_until timestamp with time zone,
+    voting_ended_at timestamp with time zone,
+    tallying_started_at timestamp with time zone,
+    tallying_finished_at timestamp with time zone,
+    tallies_combined_at timestamp with time zone,
+    result_released_at timestamp with time zone,
+    voters_hash character varying(100),
+    encrypted_tally text,
+    result text,
+    result_proof text,
+    help_email character varying(254),
+    election_info_url character varying(300),
+    admin_id integer NOT NULL
+);
+
+
+ALTER TABLE public.helios_election OWNER TO helios;
+
+--
+-- Name: helios_election_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.helios_election_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.helios_election_id_seq OWNER TO helios;
+
+--
+-- Name: helios_election_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.helios_election_id_seq OWNED BY public.helios_election.id;
+
+
+--
+-- Name: helios_electionlog; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.helios_electionlog (
+    id integer NOT NULL,
+    log character varying(500) NOT NULL,
+    at timestamp with time zone NOT NULL,
+    election_id integer NOT NULL
+);
+
+
+ALTER TABLE public.helios_electionlog OWNER TO helios;
+
+--
+-- Name: helios_electionlog_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.helios_electionlog_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.helios_electionlog_id_seq OWNER TO helios;
+
+--
+-- Name: helios_electionlog_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.helios_electionlog_id_seq OWNED BY public.helios_electionlog.id;
+
+
+--
+-- Name: helios_trustee; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.helios_trustee (
+    id integer NOT NULL,
+    uuid character varying(50) NOT NULL,
+    name character varying(200) NOT NULL,
+    email character varying(254) NOT NULL,
+    secret character varying(100) NOT NULL,
+    public_key text,
+    public_key_hash character varying(100) NOT NULL,
+    secret_key text,
+    pok text,
+    decryption_factors text,
+    decryption_proofs text,
+    election_id integer NOT NULL
+);
+
+
+ALTER TABLE public.helios_trustee OWNER TO helios;
+
+--
+-- Name: helios_trustee_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.helios_trustee_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.helios_trustee_id_seq OWNER TO helios;
+
+--
+-- Name: helios_trustee_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.helios_trustee_id_seq OWNED BY public.helios_trustee.id;
+
+
+--
+-- Name: helios_voter; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.helios_voter (
+    id integer NOT NULL,
+    uuid character varying(50) NOT NULL,
+    voter_login_id character varying(100),
+    voter_password character varying(100),
+    voter_name character varying(200),
+    voter_email character varying(250),
+    alias character varying(100),
+    vote text,
+    vote_hash character varying(100),
+    cast_at timestamp with time zone,
+    election_id integer NOT NULL,
+    user_id integer
+);
+
+
+ALTER TABLE public.helios_voter OWNER TO helios;
+
+--
+-- Name: helios_voter_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.helios_voter_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.helios_voter_id_seq OWNER TO helios;
+
+--
+-- Name: helios_voter_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.helios_voter_id_seq OWNED BY public.helios_voter.id;
+
+
+--
+-- Name: helios_voterfile; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.helios_voterfile (
+    id integer NOT NULL,
+    voter_file character varying(250),
+    voter_file_content text,
+    uploaded_at timestamp with time zone NOT NULL,
+    processing_started_at timestamp with time zone,
+    processing_finished_at timestamp with time zone,
+    num_voters integer,
+    election_id integer NOT NULL
+);
+
+
+ALTER TABLE public.helios_voterfile OWNER TO helios;
+
+--
+-- Name: helios_voterfile_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.helios_voterfile_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.helios_voterfile_id_seq OWNER TO helios;
+
+--
+-- Name: helios_voterfile_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.helios_voterfile_id_seq OWNED BY public.helios_voterfile.id;
+
+
+--
+-- Name: heliosinstitution_institution; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.heliosinstitution_institution (
+    id integer NOT NULL,
+    name character varying(250) NOT NULL,
+    short_name character varying(100) NOT NULL,
+    main_phone character varying(25) NOT NULL,
+    sec_phone character varying(25) NOT NULL,
+    address text NOT NULL,
+    idp_address character varying(200) NOT NULL,
+    upload_voters boolean NOT NULL
+);
+
+
+ALTER TABLE public.heliosinstitution_institution OWNER TO helios;
+
+--
+-- Name: heliosinstitution_institution_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.heliosinstitution_institution_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.heliosinstitution_institution_id_seq OWNER TO helios;
+
+--
+-- Name: heliosinstitution_institution_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.heliosinstitution_institution_id_seq OWNED BY public.heliosinstitution_institution.id;
+
+
+--
+-- Name: heliosinstitution_institutionuserprofile; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.heliosinstitution_institutionuserprofile (
+    id integer NOT NULL,
+    email character varying(254) NOT NULL,
+    expires_at timestamp with time zone,
+    active boolean NOT NULL,
+    django_user_id integer NOT NULL,
+    helios_user_id integer,
+    institution_id integer NOT NULL
+);
+
+
+ALTER TABLE public.heliosinstitution_institutionuserprofile OWNER TO helios;
+
+--
+-- Name: heliosinstitution_institutionuserprofile_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.heliosinstitution_institutionuserprofile_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.heliosinstitution_institutionuserprofile_id_seq OWNER TO helios;
+
+--
+-- Name: heliosinstitution_institutionuserprofile_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.heliosinstitution_institutionuserprofile_id_seq OWNED BY public.heliosinstitution_institutionuserprofile.id;
+
+
+--
+-- Name: helioslog_helioslog; Type: TABLE; Schema: public; Owner: helios
+--
+
+CREATE TABLE public.helioslog_helioslog (
+    id integer NOT NULL,
+    model character varying(200),
+    description text NOT NULL,
+    at timestamp with time zone NOT NULL,
+    ip inet,
+    action_type character varying(250) NOT NULL,
+    user_id integer NOT NULL
+);
+
+
+ALTER TABLE public.helioslog_helioslog OWNER TO helios;
+
+--
+-- Name: helioslog_helioslog_id_seq; Type: SEQUENCE; Schema: public; Owner: helios
+--
+
+CREATE SEQUENCE public.helioslog_helioslog_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.helioslog_helioslog_id_seq OWNER TO helios;
+
+--
+-- Name: helioslog_helioslog_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: helios
+--
+
+ALTER SEQUENCE public.helioslog_helioslog_id_seq OWNED BY public.helioslog_helioslog.id;
+
+
+--
+-- Name: auth_group id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_group ALTER COLUMN id SET DEFAULT nextval('public.auth_group_id_seq'::regclass);
+
+
+--
+-- Name: auth_group_permissions id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('public.auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: auth_permission id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_permission ALTER COLUMN id SET DEFAULT nextval('public.auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: auth_user id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_user ALTER COLUMN id SET DEFAULT nextval('public.auth_user_id_seq'::regclass);
+
+
+--
+-- Name: auth_user_groups id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_user_groups ALTER COLUMN id SET DEFAULT nextval('public.auth_user_groups_id_seq'::regclass);
+
+
+--
+-- Name: auth_user_user_permissions id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('public.auth_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- Name: celery_taskmeta id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.celery_taskmeta ALTER COLUMN id SET DEFAULT nextval('public.celery_taskmeta_id_seq'::regclass);
+
+
+--
+-- Name: celery_tasksetmeta id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.celery_tasksetmeta ALTER COLUMN id SET DEFAULT nextval('public.celery_tasksetmeta_id_seq'::regclass);
+
+
+--
+-- Name: django_admin_log id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.django_admin_log ALTER COLUMN id SET DEFAULT nextval('public.django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: django_content_type id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.django_content_type ALTER COLUMN id SET DEFAULT nextval('public.django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: django_migrations id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.django_migrations ALTER COLUMN id SET DEFAULT nextval('public.django_migrations_id_seq'::regclass);
+
+
+--
+-- Name: django_site id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.django_site ALTER COLUMN id SET DEFAULT nextval('public.django_site_id_seq'::regclass);
+
+
+--
+-- Name: djcelery_crontabschedule id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djcelery_crontabschedule ALTER COLUMN id SET DEFAULT nextval('public.djcelery_crontabschedule_id_seq'::regclass);
+
+
+--
+-- Name: djcelery_intervalschedule id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djcelery_intervalschedule ALTER COLUMN id SET DEFAULT nextval('public.djcelery_intervalschedule_id_seq'::regclass);
+
+
+--
+-- Name: djcelery_periodictask id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djcelery_periodictask ALTER COLUMN id SET DEFAULT nextval('public.djcelery_periodictask_id_seq'::regclass);
+
+
+--
+-- Name: djcelery_taskstate id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djcelery_taskstate ALTER COLUMN id SET DEFAULT nextval('public.djcelery_taskstate_id_seq'::regclass);
+
+
+--
+-- Name: djcelery_workerstate id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djcelery_workerstate ALTER COLUMN id SET DEFAULT nextval('public.djcelery_workerstate_id_seq'::regclass);
+
+
+--
+-- Name: djkombu_message id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djkombu_message ALTER COLUMN id SET DEFAULT nextval('public.djkombu_message_id_seq'::regclass);
+
+
+--
+-- Name: djkombu_queue id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djkombu_queue ALTER COLUMN id SET DEFAULT nextval('public.djkombu_queue_id_seq'::regclass);
+
+
+--
+-- Name: helios_auditedballot id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_auditedballot ALTER COLUMN id SET DEFAULT nextval('public.helios_auditedballot_id_seq'::regclass);
+
+
+--
+-- Name: helios_auth_user id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_auth_user ALTER COLUMN id SET DEFAULT nextval('public.helios_auth_user_id_seq'::regclass);
+
+
+--
+-- Name: helios_castvote id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_castvote ALTER COLUMN id SET DEFAULT nextval('public.helios_castvote_id_seq'::regclass);
+
+
+--
+-- Name: helios_election id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_election ALTER COLUMN id SET DEFAULT nextval('public.helios_election_id_seq'::regclass);
+
+
+--
+-- Name: helios_electionlog id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_electionlog ALTER COLUMN id SET DEFAULT nextval('public.helios_electionlog_id_seq'::regclass);
+
+
+--
+-- Name: helios_trustee id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_trustee ALTER COLUMN id SET DEFAULT nextval('public.helios_trustee_id_seq'::regclass);
+
+
+--
+-- Name: helios_voter id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_voter ALTER COLUMN id SET DEFAULT nextval('public.helios_voter_id_seq'::regclass);
+
+
+--
+-- Name: helios_voterfile id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_voterfile ALTER COLUMN id SET DEFAULT nextval('public.helios_voterfile_id_seq'::regclass);
+
+
+--
+-- Name: heliosinstitution_institution id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.heliosinstitution_institution ALTER COLUMN id SET DEFAULT nextval('public.heliosinstitution_institution_id_seq'::regclass);
+
+
+--
+-- Name: heliosinstitution_institutionuserprofile id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.heliosinstitution_institutionuserprofile ALTER COLUMN id SET DEFAULT nextval('public.heliosinstitution_institutionuserprofile_id_seq'::regclass);
+
+
+--
+-- Name: helioslog_helioslog id; Type: DEFAULT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helioslog_helioslog ALTER COLUMN id SET DEFAULT nextval('public.helioslog_helioslog_id_seq'::regclass);
+
+
+--
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.auth_group (id, name) FROM stdin;
+1	Election Admin
+2	Institution Admin
+\.
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.auth_group_id_seq', 2, true);
+
+
+--
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.auth_group_permissions (id, group_id, permission_id) FROM stdin;
+1	2	85
+2	2	86
+3	2	87
+4	2	88
+\.
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.auth_group_permissions_id_seq', 4, true);
+
+
+--
+-- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
+1	Can add permission	1	add_permission
+2	Can change permission	1	change_permission
+3	Can delete permission	1	delete_permission
+4	Can add group	2	add_group
+5	Can change group	2	change_group
+6	Can delete group	2	delete_group
+7	Can add user	3	add_user
+8	Can change user	3	change_user
+9	Can delete user	3	delete_user
+10	Can add content type	4	add_contenttype
+11	Can change content type	4	change_contenttype
+12	Can delete content type	4	delete_contenttype
+13	Can add session	5	add_session
+14	Can change session	5	change_session
+15	Can delete session	5	delete_session
+16	Can add site	6	add_site
+17	Can change site	6	change_site
+18	Can delete site	6	delete_site
+19	Can add log entry	7	add_logentry
+20	Can change log entry	7	change_logentry
+21	Can delete log entry	7	delete_logentry
+22	Can add task state	8	add_taskmeta
+23	Can change task state	8	change_taskmeta
+24	Can delete task state	8	delete_taskmeta
+25	Can add saved group result	9	add_tasksetmeta
+26	Can change saved group result	9	change_tasksetmeta
+27	Can delete saved group result	9	delete_tasksetmeta
+28	Can add interval	10	add_intervalschedule
+29	Can change interval	10	change_intervalschedule
+30	Can delete interval	10	delete_intervalschedule
+31	Can add crontab	11	add_crontabschedule
+32	Can change crontab	11	change_crontabschedule
+33	Can delete crontab	11	delete_crontabschedule
+34	Can add periodic tasks	12	add_periodictasks
+35	Can change periodic tasks	12	change_periodictasks
+36	Can delete periodic tasks	12	delete_periodictasks
+37	Can add periodic task	13	add_periodictask
+38	Can change periodic task	13	change_periodictask
+39	Can delete periodic task	13	delete_periodictask
+40	Can add worker	14	add_workerstate
+41	Can change worker	14	change_workerstate
+42	Can delete worker	14	delete_workerstate
+43	Can add task	15	add_taskstate
+44	Can change task	15	change_taskstate
+45	Can delete task	15	delete_taskstate
+46	Can add queue	16	add_queue
+47	Can change queue	16	change_queue
+48	Can delete queue	16	delete_queue
+49	Can add message	17	add_message
+50	Can change message	17	change_message
+51	Can delete message	17	delete_message
+52	Can add user	18	add_user
+53	Can change user	18	change_user
+54	Can delete user	18	delete_user
+55	Can add election	19	add_election
+56	Can change election	19	change_election
+57	Can delete election	19	delete_election
+58	Can add election log	20	add_electionlog
+59	Can change election log	20	change_electionlog
+60	Can delete election log	20	delete_electionlog
+61	Can add voter file	21	add_voterfile
+62	Can change voter file	21	change_voterfile
+63	Can delete voter file	21	delete_voterfile
+64	Can add voter	22	add_voter
+65	Can change voter	22	change_voter
+66	Can delete voter	22	delete_voter
+67	Can add cast vote	23	add_castvote
+68	Can change cast vote	23	change_castvote
+69	Can delete cast vote	23	delete_castvote
+70	Can add audited ballot	24	add_auditedballot
+71	Can change audited ballot	24	change_auditedballot
+72	Can delete audited ballot	24	delete_auditedballot
+73	Can add trustee	25	add_trustee
+74	Can change trustee	25	change_trustee
+75	Can delete trustee	25	delete_trustee
+76	Can add helios log	26	add_helioslog
+77	Can change helios log	26	change_helioslog
+78	Can delete helios log	26	delete_helioslog
+79	Can add institution	27	add_institution
+80	Can change institution	27	change_institution
+81	Can delete institution	27	delete_institution
+82	Can add institution user profile	28	add_institutionuserprofile
+83	Can change institution user profile	28	change_institutionuserprofile
+84	Can delete institution user profile	28	delete_institutionuserprofile
+85	Can delegate institution management tasks	28	delegate_institution_mngt
+86	Can revoke institution management tasks	28	revoke_institution_mngt
+87	Can delegate election management tasks	28	delegate_election_mngt
+88	Can revoke election management tasks	28	revoke_election_mngt
+\.
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.auth_permission_id_seq', 88, true);
+
+
+--
+-- Data for Name: auth_user; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
+1	pbkdf2_sha256$20000$dY9Wextr0Rzo$yE8bvjzpFrWO/xgK5CfZuLvlquN7qIyybcEXgsRaz0U=	2020-10-13 12:46:04.117091+00	t	root			sti@unifesp.br	t	t	2020-10-13 12:31:23.518375+00
+\.
+
+
+--
+-- Data for Name: auth_user_groups; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.auth_user_groups (id, user_id, group_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.auth_user_groups_id_seq', 1, false);
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.auth_user_id_seq', 1, true);
+
+
+--
+-- Data for Name: auth_user_user_permissions; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.auth_user_user_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: celery_taskmeta; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.celery_taskmeta (id, task_id, status, result, date_done, traceback, hidden, meta) FROM stdin;
+\.
+
+
+--
+-- Name: celery_taskmeta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.celery_taskmeta_id_seq', 1, false);
+
+
+--
+-- Data for Name: celery_tasksetmeta; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.celery_tasksetmeta (id, taskset_id, result, date_done, hidden) FROM stdin;
+\.
+
+
+--
+-- Name: celery_tasksetmeta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.celery_tasksetmeta_id_seq', 1, false);
+
+
+--
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.django_admin_log (id, action_time, object_id, object_repr, action_flag, change_message, content_type_id, user_id) FROM stdin;
+\.
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 1, false);
+
+
+--
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.django_content_type (id, app_label, model) FROM stdin;
+1	auth	permission
+2	auth	group
+3	auth	user
+4	contenttypes	contenttype
+5	sessions	session
+6	sites	site
+7	admin	logentry
+8	djcelery	taskmeta
+9	djcelery	tasksetmeta
+10	djcelery	intervalschedule
+11	djcelery	crontabschedule
+12	djcelery	periodictasks
+13	djcelery	periodictask
+14	djcelery	workerstate
+15	djcelery	taskstate
+16	kombu_transport_django	queue
+17	kombu_transport_django	message
+18	helios_auth	user
+19	helios	election
+20	helios	electionlog
+21	helios	voterfile
+22	helios	voter
+23	helios	castvote
+24	helios	auditedballot
+25	helios	trustee
+26	helioslog	helioslog
+27	heliosinstitution	institution
+28	heliosinstitution	institutionuserprofile
+\.
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.django_content_type_id_seq', 28, true);
+
+
+--
+-- Data for Name: django_migrations; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.django_migrations (id, app, name, applied) FROM stdin;
+1	contenttypes	0001_initial	2020-10-13 12:31:13.346629+00
+2	auth	0001_initial	2020-10-13 12:31:13.474403+00
+3	admin	0001_initial	2020-10-13 12:31:13.537492+00
+4	contenttypes	0002_remove_content_type_name	2020-10-13 12:31:13.590619+00
+5	auth	0002_alter_permission_name_max_length	2020-10-13 12:31:13.611477+00
+6	auth	0003_alter_user_email_max_length	2020-10-13 12:31:13.632146+00
+7	auth	0004_alter_user_username_opts	2020-10-13 12:31:13.654519+00
+8	auth	0005_alter_user_last_login_null	2020-10-13 12:31:13.722561+00
+9	auth	0006_require_contenttypes_0002	2020-10-13 12:31:13.725248+00
+10	helios_auth	0001_initial	2020-10-13 12:31:13.751352+00
+11	helios	0001_initial	2020-10-13 12:31:14.12998+00
+12	helios	0002_castvote_cast_ip	2020-10-13 12:31:14.17213+00
+13	helios	0003_auto_20160507_1948	2020-10-13 12:31:14.209252+00
+14	helios	0004_auto_20170528_2025	2020-10-13 12:31:14.280433+00
+15	heliosinstitution	0001_initial	2020-10-13 12:31:14.366295+00
+16	helioslog	0001_initial	2020-10-13 12:31:14.421292+00
+17	helioslog	0002_auto_20180314_1752	2020-10-13 12:31:14.463645+00
+18	kombu_transport_django	0001_initial	2020-10-13 12:31:14.533097+00
+19	sessions	0001_initial	2020-10-13 12:31:14.578009+00
+20	sites	0001_initial	2020-10-13 12:31:14.6165+00
+\.
+
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 20, true);
+
+
+--
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
+s54gxj1yo4qrxwp1xzzekbjvh9g7lvc5	MTMwNGVjYTVmNzA3YzE3ZDA4MzE3ZDU5ZjA3YWRjMjEwMDc4MDZmNzp7ImNzcmZfdG9rZW4iOiJhMzNlYTZmNS1mMDM2LTQwMGEtYTkwNy03ZTZjZjQ4NWJiYjIiLCJhdXRoX3N5c3RlbV9uYW1lIjoibGRhcCIsIl9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJmOWJhYzk5ZjgxM2JjM2I4MDRmZGVlM2E5ZTllOGMyNTRmY2RkMmU3IiwiYXV0aF9yZXR1cm5fdXJsIjoiIn0=	2020-10-27 12:46:04.1203+00
+\.
+
+
+--
+-- Data for Name: django_site; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.django_site (id, domain, name) FROM stdin;
+1	seusite.com	seusite.com
+\.
+
+
+--
+-- Name: django_site_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.django_site_id_seq', 1, true);
+
+
+--
+-- Data for Name: djcelery_crontabschedule; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.djcelery_crontabschedule (id, minute, hour, day_of_week, day_of_month, month_of_year) FROM stdin;
+\.
+
+
+--
+-- Name: djcelery_crontabschedule_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.djcelery_crontabschedule_id_seq', 1, false);
+
+
+--
+-- Data for Name: djcelery_intervalschedule; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.djcelery_intervalschedule (id, every, period) FROM stdin;
+\.
+
+
+--
+-- Name: djcelery_intervalschedule_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.djcelery_intervalschedule_id_seq', 1, false);
+
+
+--
+-- Data for Name: djcelery_periodictask; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.djcelery_periodictask (id, name, task, interval_id, crontab_id, args, kwargs, queue, exchange, routing_key, expires, enabled, last_run_at, total_run_count, date_changed, description) FROM stdin;
+\.
+
+
+--
+-- Name: djcelery_periodictask_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.djcelery_periodictask_id_seq', 1, false);
+
+
+--
+-- Data for Name: djcelery_periodictasks; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.djcelery_periodictasks (ident, last_update) FROM stdin;
+\.
+
+
+--
+-- Data for Name: djcelery_taskstate; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.djcelery_taskstate (id, state, task_id, name, tstamp, args, kwargs, eta, expires, result, traceback, runtime, retries, worker_id, hidden) FROM stdin;
+\.
+
+
+--
+-- Name: djcelery_taskstate_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.djcelery_taskstate_id_seq', 1, false);
+
+
+--
+-- Data for Name: djcelery_workerstate; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.djcelery_workerstate (id, hostname, last_heartbeat) FROM stdin;
+\.
+
+
+--
+-- Name: djcelery_workerstate_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.djcelery_workerstate_id_seq', 1, false);
+
+
+--
+-- Data for Name: djkombu_message; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.djkombu_message (id, visible, sent_at, payload, queue_id) FROM stdin;
+\.
+
+
+--
+-- Name: djkombu_message_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.djkombu_message_id_seq', 1, false);
+
+
+--
+-- Data for Name: djkombu_queue; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.djkombu_queue (id, name) FROM stdin;
+\.
+
+
+--
+-- Name: djkombu_queue_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.djkombu_queue_id_seq', 1, false);
+
+
+--
+-- Data for Name: helios_auditedballot; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.helios_auditedballot (id, raw_vote, vote_hash, added_at, election_id) FROM stdin;
+\.
+
+
+--
+-- Name: helios_auditedballot_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.helios_auditedballot_id_seq', 1, false);
+
+
+--
+-- Data for Name: helios_auth_user; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.helios_auth_user (id, user_type, user_id, name, info, token, admin_p) FROM stdin;
+\.
+
+
+--
+-- Name: helios_auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.helios_auth_user_id_seq', 1, false);
+
+
+--
+-- Data for Name: helios_castvote; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.helios_castvote (id, vote, vote_hash, vote_tinyhash, cast_at, quarantined_p, released_from_quarantine_at, verified_at, invalidated_at, voter_id, cast_ip) FROM stdin;
+\.
+
+
+--
+-- Name: helios_castvote_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.helios_castvote_id_seq', 1, false);
+
+
+--
+-- Data for Name: helios_election; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.helios_election (id, uuid, datatype, short_name, name, election_type, private_p, description, public_key, private_key, questions, eligibility, openreg, featured_p, use_voter_aliases, use_advanced_audit_features, randomize_answer_order, cast_url, created_at, modified_at, frozen_at, archived_at, registration_starts_at, voting_starts_at, voting_ends_at, complaint_period_ends_at, tallying_starts_at, voting_started_at, voting_extended_until, voting_ended_at, tallying_started_at, tallying_finished_at, tallies_combined_at, result_released_at, voters_hash, encrypted_tally, result, result_proof, help_email, election_info_url, admin_id) FROM stdin;
+\.
+
+
+--
+-- Name: helios_election_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.helios_election_id_seq', 1, false);
+
+
+--
+-- Data for Name: helios_electionlog; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.helios_electionlog (id, log, at, election_id) FROM stdin;
+\.
+
+
+--
+-- Name: helios_electionlog_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.helios_electionlog_id_seq', 1, false);
+
+
+--
+-- Data for Name: helios_trustee; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.helios_trustee (id, uuid, name, email, secret, public_key, public_key_hash, secret_key, pok, decryption_factors, decryption_proofs, election_id) FROM stdin;
+\.
+
+
+--
+-- Name: helios_trustee_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.helios_trustee_id_seq', 1, false);
+
+
+--
+-- Data for Name: helios_voter; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.helios_voter (id, uuid, voter_login_id, voter_password, voter_name, voter_email, alias, vote, vote_hash, cast_at, election_id, user_id) FROM stdin;
+\.
+
+
+--
+-- Name: helios_voter_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.helios_voter_id_seq', 1, false);
+
+
+--
+-- Data for Name: helios_voterfile; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.helios_voterfile (id, voter_file, voter_file_content, uploaded_at, processing_started_at, processing_finished_at, num_voters, election_id) FROM stdin;
+\.
+
+
+--
+-- Name: helios_voterfile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.helios_voterfile_id_seq', 1, false);
+
+
+--
+-- Data for Name: heliosinstitution_institution; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.heliosinstitution_institution (id, name, short_name, main_phone, sec_phone, address, idp_address, upload_voters) FROM stdin;
+\.
+
+
+--
+-- Name: heliosinstitution_institution_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.heliosinstitution_institution_id_seq', 1, false);
+
+
+--
+-- Data for Name: heliosinstitution_institutionuserprofile; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.heliosinstitution_institutionuserprofile (id, email, expires_at, active, django_user_id, helios_user_id, institution_id) FROM stdin;
+\.
+
+
+--
+-- Name: heliosinstitution_institutionuserprofile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.heliosinstitution_institutionuserprofile_id_seq', 1, false);
+
+
+--
+-- Data for Name: helioslog_helioslog; Type: TABLE DATA; Schema: public; Owner: helios
+--
+
+COPY public.helioslog_helioslog (id, model, description, at, ip, action_type, user_id) FROM stdin;
+\.
+
+
+--
+-- Name: helioslog_helioslog_id_seq; Type: SEQUENCE SET; Schema: public; Owner: helios
+--
+
+SELECT pg_catalog.setval('public.helioslog_helioslog_id_seq', 1, false);
+
+
+--
+-- Name: auth_group auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_group_id_permission_id_key; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_permission_id_key UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission auth_permission_content_type_id_codename_key; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_codename_key UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups auth_user_groups_user_id_group_id_key; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_group_id_key UNIQUE (user_id, group_id);
+
+
+--
+-- Name: auth_user auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_user
+    ADD CONSTRAINT auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permissions_user_id_permission_id_key; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_permission_id_key UNIQUE (user_id, permission_id);
+
+
+--
+-- Name: auth_user auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_user
+    ADD CONSTRAINT auth_user_username_key UNIQUE (username);
+
+
+--
+-- Name: celery_taskmeta celery_taskmeta_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.celery_taskmeta
+    ADD CONSTRAINT celery_taskmeta_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: celery_taskmeta celery_taskmeta_task_id_key; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.celery_taskmeta
+    ADD CONSTRAINT celery_taskmeta_task_id_key UNIQUE (task_id);
+
+
+--
+-- Name: celery_tasksetmeta celery_tasksetmeta_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.celery_tasksetmeta
+    ADD CONSTRAINT celery_tasksetmeta_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: celery_tasksetmeta celery_tasksetmeta_taskset_id_key; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.celery_tasksetmeta
+    ADD CONSTRAINT celery_tasksetmeta_taskset_id_key UNIQUE (taskset_id);
+
+
+--
+-- Name: django_admin_log django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type django_content_type_app_label_45f3b1d93ec8c61c_uniq; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.django_content_type
+    ADD CONSTRAINT django_content_type_app_label_45f3b1d93ec8c61c_uniq UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_migrations django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.django_migrations
+    ADD CONSTRAINT django_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: django_site django_site_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.django_site
+    ADD CONSTRAINT django_site_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: djcelery_crontabschedule djcelery_crontabschedule_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djcelery_crontabschedule
+    ADD CONSTRAINT djcelery_crontabschedule_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: djcelery_intervalschedule djcelery_intervalschedule_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djcelery_intervalschedule
+    ADD CONSTRAINT djcelery_intervalschedule_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: djcelery_periodictask djcelery_periodictask_name_key; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djcelery_periodictask
+    ADD CONSTRAINT djcelery_periodictask_name_key UNIQUE (name);
+
+
+--
+-- Name: djcelery_periodictask djcelery_periodictask_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djcelery_periodictask
+    ADD CONSTRAINT djcelery_periodictask_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: djcelery_periodictasks djcelery_periodictasks_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djcelery_periodictasks
+    ADD CONSTRAINT djcelery_periodictasks_pkey PRIMARY KEY (ident);
+
+
+--
+-- Name: djcelery_taskstate djcelery_taskstate_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djcelery_taskstate
+    ADD CONSTRAINT djcelery_taskstate_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: djcelery_taskstate djcelery_taskstate_task_id_key; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djcelery_taskstate
+    ADD CONSTRAINT djcelery_taskstate_task_id_key UNIQUE (task_id);
+
+
+--
+-- Name: djcelery_workerstate djcelery_workerstate_hostname_key; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djcelery_workerstate
+    ADD CONSTRAINT djcelery_workerstate_hostname_key UNIQUE (hostname);
+
+
+--
+-- Name: djcelery_workerstate djcelery_workerstate_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djcelery_workerstate
+    ADD CONSTRAINT djcelery_workerstate_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: djkombu_message djkombu_message_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djkombu_message
+    ADD CONSTRAINT djkombu_message_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: djkombu_queue djkombu_queue_name_key; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djkombu_queue
+    ADD CONSTRAINT djkombu_queue_name_key UNIQUE (name);
+
+
+--
+-- Name: djkombu_queue djkombu_queue_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djkombu_queue
+    ADD CONSTRAINT djkombu_queue_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: helios_auditedballot helios_auditedballot_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_auditedballot
+    ADD CONSTRAINT helios_auditedballot_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: helios_auth_user helios_auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_auth_user
+    ADD CONSTRAINT helios_auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: helios_auth_user helios_auth_user_user_type_2d8d3db0e634a0ba_uniq; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_auth_user
+    ADD CONSTRAINT helios_auth_user_user_type_2d8d3db0e634a0ba_uniq UNIQUE (user_type, user_id);
+
+
+--
+-- Name: helios_castvote helios_castvote_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_castvote
+    ADD CONSTRAINT helios_castvote_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: helios_castvote helios_castvote_vote_tinyhash_key; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_castvote
+    ADD CONSTRAINT helios_castvote_vote_tinyhash_key UNIQUE (vote_tinyhash);
+
+
+--
+-- Name: helios_election helios_election_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_election
+    ADD CONSTRAINT helios_election_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: helios_election helios_election_short_name_3a5e3f6076aecf8a_uniq; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_election
+    ADD CONSTRAINT helios_election_short_name_3a5e3f6076aecf8a_uniq UNIQUE (short_name);
+
+
+--
+-- Name: helios_electionlog helios_electionlog_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_electionlog
+    ADD CONSTRAINT helios_electionlog_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: helios_trustee helios_trustee_election_id_6a618cf12c51ebb0_uniq; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_trustee
+    ADD CONSTRAINT helios_trustee_election_id_6a618cf12c51ebb0_uniq UNIQUE (election_id, email);
+
+
+--
+-- Name: helios_trustee helios_trustee_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_trustee
+    ADD CONSTRAINT helios_trustee_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: helios_voter helios_voter_election_id_4b6c196ff0aa53d1_uniq; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_voter
+    ADD CONSTRAINT helios_voter_election_id_4b6c196ff0aa53d1_uniq UNIQUE (election_id, voter_login_id);
+
+
+--
+-- Name: helios_voter helios_voter_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_voter
+    ADD CONSTRAINT helios_voter_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: helios_voterfile helios_voterfile_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_voterfile
+    ADD CONSTRAINT helios_voterfile_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: heliosinstitution_institution heliosinstitution_institution_idp_address_key; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.heliosinstitution_institution
+    ADD CONSTRAINT heliosinstitution_institution_idp_address_key UNIQUE (idp_address);
+
+
+--
+-- Name: heliosinstitution_institution heliosinstitution_institution_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.heliosinstitution_institution
+    ADD CONSTRAINT heliosinstitution_institution_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: heliosinstitution_institutionuserprofile heliosinstitution_institutionuserprofile_django_user_id_key; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.heliosinstitution_institutionuserprofile
+    ADD CONSTRAINT heliosinstitution_institutionuserprofile_django_user_id_key UNIQUE (django_user_id);
+
+
+--
+-- Name: heliosinstitution_institutionuserprofile heliosinstitution_institutionuserprofile_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.heliosinstitution_institutionuserprofile
+    ADD CONSTRAINT heliosinstitution_institutionuserprofile_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: helioslog_helioslog helioslog_helioslog_pkey; Type: CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helioslog_helioslog
+    ADD CONSTRAINT helioslog_helioslog_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_name_253ae2a6331666e8_like; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX auth_group_name_253ae2a6331666e8_like ON public.auth_group USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permissions_0e939a4f; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX auth_group_permissions_0e939a4f ON public.auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_8373b171; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX auth_group_permissions_8373b171 ON public.auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_417f1b1c; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX auth_permission_417f1b1c ON public.auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: auth_user_groups_0e939a4f; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX auth_user_groups_0e939a4f ON public.auth_user_groups USING btree (group_id);
+
+
+--
+-- Name: auth_user_groups_e8701ad4; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX auth_user_groups_e8701ad4 ON public.auth_user_groups USING btree (user_id);
+
+
+--
+-- Name: auth_user_user_permissions_8373b171; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX auth_user_user_permissions_8373b171 ON public.auth_user_user_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_user_user_permissions_e8701ad4; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX auth_user_user_permissions_e8701ad4 ON public.auth_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: auth_user_username_51b3b110094b8aae_like; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX auth_user_username_51b3b110094b8aae_like ON public.auth_user USING btree (username varchar_pattern_ops);
+
+
+--
+-- Name: celery_taskmeta_662f707d; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX celery_taskmeta_662f707d ON public.celery_taskmeta USING btree (hidden);
+
+
+--
+-- Name: celery_taskmeta_task_id_1efd6ed1da631331_like; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX celery_taskmeta_task_id_1efd6ed1da631331_like ON public.celery_taskmeta USING btree (task_id varchar_pattern_ops);
+
+
+--
+-- Name: celery_tasksetmeta_662f707d; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX celery_tasksetmeta_662f707d ON public.celery_tasksetmeta USING btree (hidden);
+
+
+--
+-- Name: celery_tasksetmeta_taskset_id_24b26c359742c9ab_like; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX celery_tasksetmeta_taskset_id_24b26c359742c9ab_like ON public.celery_tasksetmeta USING btree (taskset_id varchar_pattern_ops);
+
+
+--
+-- Name: django_admin_log_417f1b1c; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX django_admin_log_417f1b1c ON public.django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_e8701ad4; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX django_admin_log_e8701ad4 ON public.django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_session_de54fa62; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX django_session_de54fa62 ON public.django_session USING btree (expire_date);
+
+
+--
+-- Name: django_session_session_key_461cfeaa630ca218_like; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX django_session_session_key_461cfeaa630ca218_like ON public.django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: djcelery_periodictask_1dcd7040; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX djcelery_periodictask_1dcd7040 ON public.djcelery_periodictask USING btree (interval_id);
+
+
+--
+-- Name: djcelery_periodictask_f3f0d72a; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX djcelery_periodictask_f3f0d72a ON public.djcelery_periodictask USING btree (crontab_id);
+
+
+--
+-- Name: djcelery_periodictask_name_47c621f8dc029d22_like; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX djcelery_periodictask_name_47c621f8dc029d22_like ON public.djcelery_periodictask USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: djcelery_taskstate_662f707d; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX djcelery_taskstate_662f707d ON public.djcelery_taskstate USING btree (hidden);
+
+
+--
+-- Name: djcelery_taskstate_863bb2ee; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX djcelery_taskstate_863bb2ee ON public.djcelery_taskstate USING btree (tstamp);
+
+
+--
+-- Name: djcelery_taskstate_9ed39e2e; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX djcelery_taskstate_9ed39e2e ON public.djcelery_taskstate USING btree (state);
+
+
+--
+-- Name: djcelery_taskstate_b068931c; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX djcelery_taskstate_b068931c ON public.djcelery_taskstate USING btree (name);
+
+
+--
+-- Name: djcelery_taskstate_ce77e6ef; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX djcelery_taskstate_ce77e6ef ON public.djcelery_taskstate USING btree (worker_id);
+
+
+--
+-- Name: djcelery_taskstate_name_4337b4449e8827d_like; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX djcelery_taskstate_name_4337b4449e8827d_like ON public.djcelery_taskstate USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: djcelery_taskstate_state_19cb9b39780e399c_like; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX djcelery_taskstate_state_19cb9b39780e399c_like ON public.djcelery_taskstate USING btree (state varchar_pattern_ops);
+
+
+--
+-- Name: djcelery_taskstate_task_id_29366bc6dcd6fd60_like; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX djcelery_taskstate_task_id_29366bc6dcd6fd60_like ON public.djcelery_taskstate USING btree (task_id varchar_pattern_ops);
+
+
+--
+-- Name: djcelery_workerstate_f129901a; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX djcelery_workerstate_f129901a ON public.djcelery_workerstate USING btree (last_heartbeat);
+
+
+--
+-- Name: djcelery_workerstate_hostname_3900851044588416_like; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX djcelery_workerstate_hostname_3900851044588416_like ON public.djcelery_workerstate USING btree (hostname varchar_pattern_ops);
+
+
+--
+-- Name: djkombu_message_46cf0e59; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX djkombu_message_46cf0e59 ON public.djkombu_message USING btree (visible);
+
+
+--
+-- Name: djkombu_message_75249aa1; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX djkombu_message_75249aa1 ON public.djkombu_message USING btree (queue_id);
+
+
+--
+-- Name: djkombu_message_df2f2974; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX djkombu_message_df2f2974 ON public.djkombu_message USING btree (sent_at);
+
+
+--
+-- Name: djkombu_queue_name_1c24e49fd475ad53_like; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX djkombu_queue_name_1c24e49fd475ad53_like ON public.djkombu_queue USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: helios_auditedballot_f8f30b52; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX helios_auditedballot_f8f30b52 ON public.helios_auditedballot USING btree (election_id);
+
+
+--
+-- Name: helios_castvote_49fb0f8b; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX helios_castvote_49fb0f8b ON public.helios_castvote USING btree (voter_id);
+
+
+--
+-- Name: helios_castvote_vote_tinyhash_4354d5a622179510_like; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX helios_castvote_vote_tinyhash_4354d5a622179510_like ON public.helios_castvote USING btree (vote_tinyhash varchar_pattern_ops);
+
+
+--
+-- Name: helios_election_156f41ed; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX helios_election_156f41ed ON public.helios_election USING btree (admin_id);
+
+
+--
+-- Name: helios_election_short_name_3a5e3f6076aecf8a_like; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX helios_election_short_name_3a5e3f6076aecf8a_like ON public.helios_election USING btree (short_name varchar_pattern_ops);
+
+
+--
+-- Name: helios_electionlog_f8f30b52; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX helios_electionlog_f8f30b52 ON public.helios_electionlog USING btree (election_id);
+
+
+--
+-- Name: helios_trustee_f8f30b52; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX helios_trustee_f8f30b52 ON public.helios_trustee USING btree (election_id);
+
+
+--
+-- Name: helios_voter_e8701ad4; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX helios_voter_e8701ad4 ON public.helios_voter USING btree (user_id);
+
+
+--
+-- Name: helios_voter_f8f30b52; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX helios_voter_f8f30b52 ON public.helios_voter USING btree (election_id);
+
+
+--
+-- Name: helios_voterfile_f8f30b52; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX helios_voterfile_f8f30b52 ON public.helios_voterfile USING btree (election_id);
+
+
+--
+-- Name: heliosinstitution_institution_idp_address_6d53bcc37a8c2dc_like; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX heliosinstitution_institution_idp_address_6d53bcc37a8c2dc_like ON public.heliosinstitution_institution USING btree (idp_address varchar_pattern_ops);
+
+
+--
+-- Name: heliosinstitution_institutionuserprofile_3bd8bbc2; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX heliosinstitution_institutionuserprofile_3bd8bbc2 ON public.heliosinstitution_institutionuserprofile USING btree (helios_user_id);
+
+
+--
+-- Name: heliosinstitution_institutionuserprofile_a964baeb; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX heliosinstitution_institutionuserprofile_a964baeb ON public.heliosinstitution_institutionuserprofile USING btree (institution_id);
+
+
+--
+-- Name: helioslog_helioslog_e8701ad4; Type: INDEX; Schema: public; Owner: helios
+--
+
+CREATE INDEX helioslog_helioslog_e8701ad4 ON public.helioslog_helioslog USING btree (user_id);
+
+
+--
+-- Name: heliosinstitution_institutionuserprofile D0168423efbba7309c021ba2d5c0899d; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.heliosinstitution_institutionuserprofile
+    ADD CONSTRAINT "D0168423efbba7309c021ba2d5c0899d" FOREIGN KEY (institution_id) REFERENCES public.heliosinstitution_institution(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_permission auth_content_type_id_508cf46651277a81_fk_django_content_type_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_content_type_id_508cf46651277a81_fk_django_content_type_id FOREIGN KEY (content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissions auth_group_permissio_group_id_689710a9a73b7457_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissio_group_id_689710a9a73b7457_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES public.auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissions auth_group_permission_id_1f49ccbbdc69d2fc_fk_auth_permission_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permission_id_1f49ccbbdc69d2fc_fk_auth_permission_id FOREIGN KEY (permission_id) REFERENCES public.auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions auth_user__permission_id_384b62483d7071f0_fk_auth_permission_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user__permission_id_384b62483d7071f0_fk_auth_permission_id FOREIGN KEY (permission_id) REFERENCES public.auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups auth_user_groups_group_id_33ac548dcf5f8e37_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_group_id_33ac548dcf5f8e37_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES public.auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups auth_user_groups_user_id_4b5ed4ffdb8fd9b0_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_4b5ed4ffdb8fd9b0_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permiss_user_id_7f0938558328534a_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permiss_user_id_7f0938558328534a_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: djcelery_periodictask dj_interval_id_20cfc1cad060dfad_fk_djcelery_intervalschedule_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djcelery_periodictask
+    ADD CONSTRAINT dj_interval_id_20cfc1cad060dfad_fk_djcelery_intervalschedule_id FOREIGN KEY (interval_id) REFERENCES public.djcelery_intervalschedule(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log djan_content_type_id_697914295151027a_fk_django_content_type_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT djan_content_type_id_697914295151027a_fk_django_content_type_id FOREIGN KEY (content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log django_admin_log_user_id_52fdd58701c5f563_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_52fdd58701c5f563_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: djcelery_periodictask djce_crontab_id_1d8228f5b44b680a_fk_djcelery_crontabschedule_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djcelery_periodictask
+    ADD CONSTRAINT djce_crontab_id_1d8228f5b44b680a_fk_djcelery_crontabschedule_id FOREIGN KEY (crontab_id) REFERENCES public.djcelery_crontabschedule(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: djcelery_taskstate djcelery__worker_id_30050731b1c3d3d9_fk_djcelery_workerstate_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djcelery_taskstate
+    ADD CONSTRAINT djcelery__worker_id_30050731b1c3d3d9_fk_djcelery_workerstate_id FOREIGN KEY (worker_id) REFERENCES public.djcelery_workerstate(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: djkombu_message djkombu_message_queue_id_12778caea7843dd_fk_djkombu_queue_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.djkombu_message
+    ADD CONSTRAINT djkombu_message_queue_id_12778caea7843dd_fk_djkombu_queue_id FOREIGN KEY (queue_id) REFERENCES public.djkombu_queue(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: helios_auditedballot helios_audite_election_id_dc7520303140a68_fk_helios_election_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_auditedballot
+    ADD CONSTRAINT helios_audite_election_id_dc7520303140a68_fk_helios_election_id FOREIGN KEY (election_id) REFERENCES public.helios_election(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: helios_castvote helios_castvote_voter_id_6f9eb45b6e690e92_fk_helios_voter_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_castvote
+    ADD CONSTRAINT helios_castvote_voter_id_6f9eb45b6e690e92_fk_helios_voter_id FOREIGN KEY (voter_id) REFERENCES public.helios_voter(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: helios_electionlog helios_elect_election_id_3655b606f666971b_fk_helios_election_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_electionlog
+    ADD CONSTRAINT helios_elect_election_id_3655b606f666971b_fk_helios_election_id FOREIGN KEY (election_id) REFERENCES public.helios_election(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: helios_election helios_electio_admin_id_6495ffcc66a99345_fk_helios_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_election
+    ADD CONSTRAINT helios_electio_admin_id_6495ffcc66a99345_fk_helios_auth_user_id FOREIGN KEY (admin_id) REFERENCES public.helios_auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: helios_trustee helios_trust_election_id_1c1ee4d6b1a85b4a_fk_helios_election_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_trustee
+    ADD CONSTRAINT helios_trust_election_id_1c1ee4d6b1a85b4a_fk_helios_election_id FOREIGN KEY (election_id) REFERENCES public.helios_election(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: helios_voterfile helios_voter_election_id_60d87f1e768da3e4_fk_helios_election_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_voterfile
+    ADD CONSTRAINT helios_voter_election_id_60d87f1e768da3e4_fk_helios_election_id FOREIGN KEY (election_id) REFERENCES public.helios_election(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: helios_voter helios_voter_election_id_8b201a0b0e077e6_fk_helios_election_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_voter
+    ADD CONSTRAINT helios_voter_election_id_8b201a0b0e077e6_fk_helios_election_id FOREIGN KEY (election_id) REFERENCES public.helios_election(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: helios_voter helios_voter_user_id_29236bd3c7e19f62_fk_helios_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helios_voter
+    ADD CONSTRAINT helios_voter_user_id_29236bd3c7e19f62_fk_helios_auth_user_id FOREIGN KEY (user_id) REFERENCES public.helios_auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: heliosinstitution_institutionuserprofile heliosins_helios_user_id_443280c29e2b14c_fk_helios_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.heliosinstitution_institutionuserprofile
+    ADD CONSTRAINT heliosins_helios_user_id_443280c29e2b14c_fk_helios_auth_user_id FOREIGN KEY (helios_user_id) REFERENCES public.helios_auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: heliosinstitution_institutionuserprofile heliosinstituti_django_user_id_2e8f1687da5f8da1_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.heliosinstitution_institutionuserprofile
+    ADD CONSTRAINT heliosinstituti_django_user_id_2e8f1687da5f8da1_fk_auth_user_id FOREIGN KEY (django_user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: helioslog_helioslog helioslog_helio_user_id_73ab14912010e7e7_fk_helios_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: helios
+--
+
+ALTER TABLE ONLY public.helioslog_helioslog
+    ADD CONSTRAINT helioslog_helio_user_id_73ab14912010e7e7_fk_helios_auth_user_id FOREIGN KEY (user_id) REFERENCES public.helios_auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

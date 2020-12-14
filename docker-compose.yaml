@@ -1,0 +1,62 @@
+version: "3"
+services:
+  heliosbd:
+    build: 
+      dockerfile: Postgres.Dockerfile
+      context: .    
+    image: heliospostgres
+    container_name: heliosbd    
+    expose:
+      - 5432
+    env_file:
+      - .env
+    volumes:
+      - ./volumes/bd:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - heliosnetwork      
+
+  heliosapp:
+    build:
+      dockerfile: Helios.Dockerfile
+      context: .
+      args:
+        - uid=${uid}
+        - gid=${gid}
+        - user=${user}
+        - group=${group}
+        - dir=${dir}
+    image: helios
+    container_name: heliosapp
+    ports:
+      - 443:443
+      - ${PORT_HOST}:80
+    expose:
+      - 443
+      - 80
+    env_file:
+      - .env
+    volumes:
+      - ./volumes/helios-server:/home/eleicao
+      - ./volumes/apache:/etc/apache2/sites-available
+      - ./volumes/log:/var/log/apache2
+      - ./volumes/certs:/etc/ssl/private-unifesp
+    restart: unless-stopped
+    depends_on:
+      - heliosbd
+    networks:
+      - heliosnetwork
+
+    command: python manage.py runserver 0.0.0.0:${PORT_HOST}
+    command: "supervisord -c /etc/supervisor/supervisor.conf"    
+
+networks:
+  heliosnetwork:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.8.0.0/16
+         gateway: 10.8.0.1
+         aux_addresses:
+            heliosbd: 10.8.0.2
+            heliiosapp: 10.8.0.3
